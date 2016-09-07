@@ -1,0 +1,23 @@
+{
+    "service": {
+        "id": "devstat",
+        "name": "DevStat",
+        "port": 28001
+    },
+    "checks": [
+        {
+            "service_id": "devstat",
+            "id": "devstat-server-http",
+            "name": "HTTP API on 28002",
+            "http": "http://localhost:28002/ping",
+            "interval": "60s"
+        },
+        {
+            "service_id": "devstat",
+            "id": "devstat-web-http",
+            "name": "HTTP API on 28001",
+            "http": "http://localhost:28001/ping",
+            "interval": "60s"
+        }
+    ]
+}
