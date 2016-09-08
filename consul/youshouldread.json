@@ -1,0 +1,23 @@
+{
+    "service": {
+        "id": "youshouldread",
+        "name": "YouShouldRead",
+        "port": 28003
+    },
+    "checks": [
+        {
+            "service_id": "youshouldread",
+            "id": "youshouldread-server-http",
+            "name": "HTTP API on 28004",
+            "http": "http://localhost:28004/ping",
+            "interval": "60s"
+        },
+        {
+            "service_id": "youshouldread",
+            "id": "youshouldread-web-http",
+            "name": "HTTP API on 28003",
+            "http": "http://localhost:28003/ping",
+            "interval": "60s"
+        }
+    ]
+}
