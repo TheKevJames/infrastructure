@@ -1,0 +1,23 @@
+{
+    "service": {
+        "id": "phabricator",
+        "name": "Phabricator",
+        "port": 9000
+    },
+    "checks": [
+        {
+            "service_id": "phabricator",
+            "id": "phabricator-daemons",
+            "name": "Daemons",
+            "script": "/opt/phabricator/bin/phd status 2>&1",
+            "interval": "60s"
+        },
+        {
+            "service_id": "phabricator",
+            "id": "phabricator-http",
+            "name": "HTTP API on 9000",
+            "http": "http://localhost:9000/",
+            "interval": "60s"
+        }
+    ]
+}
