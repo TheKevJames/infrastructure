@@ -9,7 +9,7 @@
             "service_id": "thekev",
             "id": "thekev-container",
             "name": "Container",
-            "script": "/bin/docker inspect -f '{{.State.Running}}' thekev_web_1",
+            "script": "/bin/docker inspect -f '{{.State.Running}}' thekevin_web_1",
             "interval": "60s"
         },
         {
