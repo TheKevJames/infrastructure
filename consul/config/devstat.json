@@ -7,9 +7,23 @@
     "checks": [
         {
             "service_id": "devstat",
+            "id": "devstat-server-container",
+            "name": "Server Container",
+            "script": "/bin/docker inspect -f '{{.State.Running}}' devstat_server_1",
+            "interval": "60s"
+        },
+        {
+            "service_id": "devstat",
             "id": "devstat-server-http",
             "name": "HTTP API on 28002",
             "http": "http://localhost:28002/ping",
+            "interval": "60s"
+        },
+        {
+            "service_id": "devstat",
+            "id": "devstat-web-container",
+            "name": "Web Container",
+            "script": "/bin/docker inspect -f '{{.State.Running}}' devstat_web_1",
             "interval": "60s"
         },
         {

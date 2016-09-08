@@ -7,6 +7,13 @@
     "checks": [
         {
             "service_id": "thekev",
+            "id": "thekev-container",
+            "name": "Container",
+            "script": "/bin/docker inspect -f '{{.State.Running}}' thekev_web_1",
+            "interval": "60s"
+        },
+        {
+            "service_id": "thekev",
             "id": "thekev-http",
             "name": "HTTP API on 28005",
             "http": "http://localhost:28005/",

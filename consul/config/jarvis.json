@@ -1,0 +1,15 @@
+{
+    "service": {
+        "id": "jarvis",
+        "name": "Jarvis"
+    },
+    "checks": [
+        {
+            "service_id": "jarvis",
+            "id": "jarvis-container",
+            "name": "Container",
+            "script": "/bin/docker inspect -f '{{.State.Running}}' jarvis_bot_1",
+            "interval": "60s"
+        }
+    ]
+}
