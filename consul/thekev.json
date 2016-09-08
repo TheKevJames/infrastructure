@@ -1,0 +1,16 @@
+{
+    "service": {
+        "id": "thekev",
+        "name": "TheKev",
+        "port": 28005
+    },
+    "checks": [
+        {
+            "service_id": "thekev",
+            "id": "thekev-http",
+            "name": "HTTP API on 28005",
+            "http": "http://localhost:28005/",
+            "interval": "60s"
+        }
+    ]
+}
