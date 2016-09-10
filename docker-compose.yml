@@ -14,3 +14,10 @@ services:
     network_mode: host
     ports:
       - "80:80"
+
+  statsd:
+    image: hopsoft/graphite-statsd:latest
+    hostname: statsd
+    ports:
+      - "28006:8125/udp"
+      - "28007:80"
