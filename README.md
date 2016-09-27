@@ -12,7 +12,7 @@ status checks.
 ## Notes
 
 This project relies on my personal projects having specific port bindings by
-default This ensures any combination of services can run on a single machine
+default. This ensures any combination of services can run on a single machine
 without needing to reconfigure. Currently, the mapping is as follows:
 
 | Port  | Service             |
