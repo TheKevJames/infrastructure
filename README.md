@@ -8,7 +8,6 @@ status checks.
     docker-compose build
     docker-compose up -d
 
-
 ## Notes
 
 This project relies on my personal projects having specific port bindings by
