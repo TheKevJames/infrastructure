@@ -1,13 +1,6 @@
 version: '2'
 
 services:
-  consul:
-    build: consul/
-    hostname: consul
-    network_mode: host
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
   nginx:
     build: nginx/
     hostname: nginx
@@ -15,9 +8,28 @@ services:
     ports:
       - "80:80"
 
+  redis:
+    image: redis:3.2.4-alpine
+    hostname: redis
+    ports:
+      - "6379:6379"
+
+  sensu:
+    build: sensu/
+    hostname: ${HOSTNAME}
+    environment:
+      - REDIS_URL=redis://127.0.0.1:6379
+    depends_on:
+      - redis
+      - statsd
+    network_mode: host
+    ports:
+      - "3000:3000"
+      - "4567:4567"
+
   statsd:
     image: hopsoft/graphite-statsd:latest
     hostname: statsd
     ports:
-      - "28006:8125/udp"
-      - "28007:80"
+      - "2003:2003"
+      - "28006:80"

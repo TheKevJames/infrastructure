@@ -1,9 +1,0 @@
-{
-    "advertise_addr": "127.0.0.1",
-    "client_addr": "0.0.0.0",
-    "log_level": "INFO",
-    "telemetry": {
-        "statsd_address": "127.0.0.1:28006"
-    },
-    "ui": true
-}

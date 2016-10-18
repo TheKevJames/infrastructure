@@ -17,12 +17,14 @@ without needing to reconfigure. Currently, the mapping is as follows:
 | Port  | Service             |
 | ----- | ------------------- |
 | 80    | nginx               |
-| 8500  | consul              |
+| 2003  | carbon collector    |
+| 3000  | sensu (uchiwa)      |
+| 4567  | sensu (api)         |
+| 6379  | redis               |
 | 9000  | phabricator         |
 | 28001 | devstat             |
 | 28002 | devstat (api)       |
 | 28003 | youshouldread       |
 | 28004 | youshouldread (api) |
 | 28005 | thekev.in           |
-| 28006 | statd collector     |
-| 28007 | graphite            |
+| 28006 | graphite-web        |

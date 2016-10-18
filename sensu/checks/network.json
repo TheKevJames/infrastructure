@@ -1,0 +1,34 @@
+{
+  "checks": {
+    "mtu": {
+      "type": "standard",
+      "command": "/opt/sensu/embedded/bin/check-mtu.rb",
+      "subscribers": [ "default" ],
+      "interval": 30
+    },
+    "netstat_tcp": {
+      "type": "metric",
+      "command": "/bin/bash -c '/opt/sensu/embedded/bin/metrics-netstat-tcp.rb -s system.${HOSTNAME//./_}.tcp'",
+      "subscribers": [ "default" ],
+      "interval": 30,
+      "output_type": "graphite",
+      "handlers": [ "graphite" ]
+    },
+    "interface": {
+      "type": "metric",
+      "command": "/bin/bash -c '/opt/sensu/embedded/bin/metrics-interface.rb -s system.${HOSTNAME//./_}.interface'",
+      "subscribers": [ "default" ],
+      "interval": 30,
+      "output_type": "graphite",
+      "handlers": [ "graphite" ]
+    },
+    "sockstat": {
+      "type": "metric",
+      "command": "/bin/bash -c '/opt/sensu/embedded/bin/metrics-sockstat.rb -s system.${HOSTNAME//./_}.sockets'",
+      "subscribers": [ "default" ],
+      "interval": 30,
+      "output_type": "graphite",
+      "handlers": [ "graphite" ]
+    }
+  }
+}
