@@ -1,11 +1,5 @@
 {
   "checks": {
-    "mtu": {
-      "type": "standard",
-      "command": "/opt/sensu/embedded/bin/check-mtu.rb",
-      "subscribers": [ "default" ],
-      "interval": 30
-    },
     "netstat_tcp": {
       "type": "metric",
       "command": "/bin/bash -c '/opt/sensu/embedded/bin/metrics-netstat-tcp.rb -s system.${HOSTNAME//./_}.tcp'",

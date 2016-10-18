@@ -9,14 +9,7 @@
     "port": 4567
   },
   "client": {
-    "address": "sensu",
-    "subscriptions": [
-      "default",
-      "devstat",
-      "phabricator",
-      "thekev",
-      "youshouldread"
-    ]
+    "address": "sensu"
   },
   "handlers": {
     "default": {
