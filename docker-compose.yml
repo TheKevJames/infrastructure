@@ -36,4 +36,4 @@ services:
     hostname: statsd
     ports:
       - "2003:2003"
-      - "28006:80"
+      - "28006:8080"
