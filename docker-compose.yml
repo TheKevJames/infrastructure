@@ -19,7 +19,7 @@ services:
     hostname: ${HOSTNAME}
     environment:
       - REDIS_URL=redis://127.0.0.1:6379
-      - SENSU_CLIENT_SUBSCRIPTIONS="default"
+      - SENSU_CLIENT_SUBSCRIPTIONS=default
     depends_on:
       - redis
       - statsd
