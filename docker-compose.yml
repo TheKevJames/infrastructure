@@ -3,6 +3,7 @@ version: '2'
 services:
   nginx:
     build: nginx/
+    image: thekevjames/infrastructure-nginx
     hostname: nginx
     network_mode: host
     ports:
@@ -16,6 +17,7 @@ services:
 
   sensu:
     build: sensu/
+    image: thekevjames/infrastructure-sensu
     hostname: ${HOSTNAME}
     environment:
       - REDIS_URL=redis://127.0.0.1:6379
@@ -29,7 +31,8 @@ services:
       - "4567:4567"
 
   statsd:
-    image: hopsoft/graphite-statsd:latest
+    build: statsd/
+    image: thekevjames/infrastructure-statsd
     hostname: statsd
     ports:
       - "2003:2003"
