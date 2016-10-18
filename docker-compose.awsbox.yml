@@ -4,4 +4,3 @@ services:
   sensu:
     environment:
       - SENSU_CLIENT_SUBSCRIPTIONS=default,devstat,thekev
-    hostname: awsbox
