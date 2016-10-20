@@ -2,7 +2,7 @@
   "checks": {
     "disk_usage": {
       "type": "standard",
-      "command": "/opt/sensu/embedded/bin/check-disk-usage.rb -w 80 -c 90",
+      "command": "/opt/sensu/embedded/bin/check-disk-usage.rb -w 85 -c 90",
       "subscribers": [ "default" ],
       "interval": 30
     },
