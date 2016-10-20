@@ -2,7 +2,7 @@
   "checks": {
     "memory_percent": {
       "type": "standard",
-      "command": "/opt/sensu/embedded/bin/check-memory-percent.rb -w 80 -c 90",
+      "command": "/opt/sensu/embedded/bin/check-memory-percent.rb -w 85 -c 95",
       "subscribers": [ "default" ],
       "interval": 30
     },
