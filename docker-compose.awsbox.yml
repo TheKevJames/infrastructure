@@ -1,6 +1,0 @@
-version: '2'
-
-services:
-  sensu:
-    environment:
-      - SENSU_CLIENT_SUBSCRIPTIONS=default,devstat,jarvis,thekev

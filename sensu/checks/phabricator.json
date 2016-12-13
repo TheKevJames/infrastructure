@@ -5,12 +5,6 @@
       "command": "/opt/phabricator/bin/phd status 2>&1",
       "subscribers": [ "phabricator" ],
       "interval": 30
-    },
-    "phabricator_http": {
-      "type": "standard",
-      "command": "/opt/sensu/embedded/bin/check-http.rb -u http://localhost:9000/",
-      "subscribers": [ "phabricator" ],
-      "interval": 30
     }
   }
 }
