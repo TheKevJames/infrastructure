@@ -21,7 +21,6 @@ without needing to reconfigure. Currently, the mapping is as follows:
 | 3000  | sensu (uchiwa)      |
 | 4567  | sensu (api)         |
 | 6379  | redis               |
-| 9000  | phabricator         |
 | 28001 | devstat             |
 | 28002 | devstat (api)       |
 | 28003 | youshouldread       |
