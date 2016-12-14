@@ -17,6 +17,18 @@ can deploy with:
     docker-compose pull
     docker-compose up -d
 
+### SSL
+
+SSL verification uses [Let's Encrypt](https://letsencrypt.org/). To enable SSL
+on a new machine, start the NGINX proxy and run:
+
+    sudo letsencrypt certonly -a webroot --webroot-path=./webroot \
+        -d devstat.thekev.in -d api.devstat.thekev.in \
+        -d thekev.in -d www.thekev.in \
+        -d jarvis.thekev.in \
+        -d netdata.thekev.in -d status.thekev.in \
+        -d youshouldread.thekev.in -d ysr.thekev.in
+
 ## Notes
 
 This project relies on my personal projects having specific port bindings by
