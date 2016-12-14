@@ -1,8 +1,0 @@
-906c906
-<                 lf_val = get(section, n, Automatic)
----
->                 lf_val = get(section, n, '/dev/%s' % k)
-917c917
-<                 maxbytes = byte_size(get(section, mb_key, '50MB'))
----
->                 maxbytes = byte_size(get(section, mb_key, '0'))

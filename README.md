@@ -1,7 +1,6 @@
 # Infrastructure
 
-This project is used to configure routing of my various projects and their
-status checks.
+This project is used to configure routing of my various projects.
 
 ## Usage
 
@@ -14,7 +13,7 @@ Since you only really need the `docker-compose.yml` file for deployment, you
 can deploy with:
 
     curl https://raw.githubusercontent.com/TheKevJames/infrastructure/master/docker-compose.yml > docker-compose.yml
-    mkdir -p nginx sensu statsd  # docker-compose oddity
+    mkdir -p nginx  # docker-compose oddity
     docker-compose pull
     docker-compose up -d
 
@@ -27,14 +26,9 @@ without needing to reconfigure. Currently, the mapping is as follows:
 | Port  | Service             |
 | ----- | ------------------- |
 | 80    | nginx               |
-| 2003  | carbon collector    |
-| 3000  | sensu (uchiwa)      |
-| 4567  | sensu (api)         |
-| 6379  | redis               |
 | 28001 | devstat             |
 | 28002 | devstat (api)       |
 | 28003 | youshouldread       |
 | 28004 | youshouldread (api) |
 | 28005 | thekev.in           |
-| 28006 | graphite-web        |
 | 28007 | jarvis              |
