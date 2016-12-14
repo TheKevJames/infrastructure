@@ -29,6 +29,13 @@ on a new machine, start the NGINX proxy and run:
         -d netdata.thekev.in -d status.thekev.in \
         -d youshouldread.thekev.in -d ysr.thekev.in
 
+You should also modify your crontab, to enable auto-renewal:
+
+```crontab
+30 2 * * 1 sudo /usr/bin/letsencrypt renew >> /var/log/le-renew.log
+35 2 * * 1 cd /path/to/infrastructure && /usr/local/bin/docker-compose up -d
+```
+
 ## Notes
 
 This project relies on my personal projects having specific port bindings by
