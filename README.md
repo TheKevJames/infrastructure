@@ -26,6 +26,7 @@ without needing to reconfigure. Currently, the mapping is as follows:
 | Port  | Service             |
 | ----- | ------------------- |
 | 80    | nginx               |
+| 19999 | netdata             |
 | 28001 | devstat             |
 | 28002 | devstat (api)       |
 | 28003 | youshouldread       |
