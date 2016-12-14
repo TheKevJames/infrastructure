@@ -8,6 +8,16 @@ status checks.
     docker-compose build
     docker-compose up -d
 
+### Deploy
+
+Since you only really need the `docker-compose.yml` file for deployment, you
+can deploy with:
+
+    curl https://raw.githubusercontent.com/TheKevJames/infrastructure/master/docker-compose.yml > docker-compose.yml
+    mkdir -p nginx sensu statsd  # docker-compose oddity
+    docker-compose pull
+    docker-compose up -d
+
 ## Notes
 
 This project relies on my personal projects having specific port bindings by
