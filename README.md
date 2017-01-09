@@ -26,6 +26,7 @@ on a new machine, start the NGINX proxy and run:
         -d devstat.thekev.in -d api.devstat.thekev.in \
         -d thekev.in -d www.thekev.in \
         -d jarvis.thekev.in \
+        -d league.thekev.in \
         -d netdata.thekev.in -d status.thekev.in \
         -d youshouldread.thekev.in -d ysr.thekev.in
 
