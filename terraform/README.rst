@@ -15,7 +15,7 @@ See the `kswapd0 bug issue report`_. The fix is to run the following regularly.
 
 This fix is in crontab.root.
 
-:: _`kswapd0 bug issue report`: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1518457/+index?comments=all
+.. _`kswapd0 bug issue report`: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1518457/+index?comments=all
 
 Local Provisioning
 ~~~~~~~~~~~~~~~~~~
