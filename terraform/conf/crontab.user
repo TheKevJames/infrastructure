@@ -1,0 +1,2 @@
+# m h  dom mon dow   command
+35 2 * * 1 cd ~/infrastructure && /usr/local/bin/docker-compose up -d

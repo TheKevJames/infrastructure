@@ -1,7 +1,7 @@
 resource "cloudflare_record" "base" {
     domain = "${var.cloudflare_domain}"
     name = "@"
-    value = "54.68.57.73"
+    value = "${aws_instance.awsbox.public_ip}"
     type = "A"
 }
 
