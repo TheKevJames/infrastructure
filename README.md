@@ -23,8 +23,8 @@ SSL verification uses [Let's Encrypt](https://letsencrypt.org/). To enable SSL
 on a new machine, start the NGINX proxy and run:
 
     sudo letsencrypt certonly -a webroot --webroot-path=./webroot \
-        -d devstat.thekev.in -d api.devstat.thekev.in \
         -d thekev.in -d www.thekev.in \
+        -d devstat.thekev.in -d api.devstat.thekev.in \
         -d jarvis.thekev.in \
         -d league.thekev.in \
         -d netdata.thekev.in -d status.thekev.in \
