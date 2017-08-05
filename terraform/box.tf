@@ -1,21 +1,6 @@
-data "aws_ami" "ubuntu" {
-    most_recent = true
-
-    filter {
-        name = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
-    }
-
-    filter {
-        name = "virtualization-type"
-        values = ["hvm"]
-    }
-
-    owners = ["099720109477"]
-}
-
 resource "aws_instance" "awsbox" {
-    ami = "${data.aws_ami.ubuntu.id}"
+    # aws ec2 describe-images --filters "Name=name,Values=ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*" "Name=virtualization-type,Values=hvm" | jq '.Images[-1].ImageId'
+    ami = "ami-7c803d1c"
     instance_type = "t2.small"
     associate_public_ip_address = true
 
@@ -31,7 +16,7 @@ resource "aws_instance" "awsbox" {
 
         connection {
             user = "ubuntu"
-            key_file = "~/.ssh/id_rsa"
+            private_key = "~/.ssh/id_rsa"
             timeout = "1m"
         }
     }
@@ -42,7 +27,7 @@ resource "aws_instance" "awsbox" {
 
         connection {
             user = "ubuntu"
-            key_file = "~/.ssh/id_rsa"
+            private_key = "~/.ssh/id_rsa"
             timeout = "1m"
         }
     }
@@ -70,7 +55,7 @@ resource "aws_instance" "awsbox" {
 
         connection {
             user = "ubuntu"
-            key_file = "~/.ssh/id_rsa"
+            private_key = "~/.ssh/id_rsa"
             timeout = "1m"
         }
     }
