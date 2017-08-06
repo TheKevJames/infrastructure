@@ -1,14 +1,12 @@
 version: 2
 
 jobs:
-  build:
-    working_directory: /app
+  check:
     docker:
       - image: docker:17.05.0-ce-git
 
     steps:
       - checkout
-      - setup_remote_docker
 
       - run:
           name: install dependencies
@@ -21,10 +19,21 @@ jobs:
           command: |
             pre-commit run --all-files
 
+  nginx:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+
+    steps:
+      - checkout
+      - setup_remote_docker
+
       - run:
           name: build image
           command: |
             docker build -t nginx nginx/
+            docker tag nginx "thekevjames/nginx:${CIRCLE_SHA1}"
+            docker tag nginx "thekevjames/nginx:latest"
 
       - deploy:
           name: push image
@@ -32,18 +41,58 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
 
-              docker tag nginx "thekevjames/nginx:${CIRCLE_SHA1}"
-              docker tag nginx "thekevjames/nginx:latest"
-
               docker push "thekevjames/nginx:${CIRCLE_SHA1}"
               docker push "thekevjames/nginx:latest"
             fi
+  ssl:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: build image
+          command: |
+            docker build -t ssl ssl/
+            docker tag ssl "thekevjames/ssl:${CIRCLE_SHA1}"
+            docker tag ssl "thekevjames/ssl:latest"
 
       - deploy:
-          name: deploy image
+          name: push image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+
+              docker push "thekevjames/ssl:${CIRCLE_SHA1}"
+              docker push "thekevjames/ssl:latest"
+            fi
+
+    deploy:
+      - deploy:
+          name: deploy images
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ssh -oStrictHostKeyChecking=no ubuntu@thekev.in "
                 docker service update --image thekevjames/nginx:latest thekevjames_nginx
+                docker service update --image thekevjames/ssl:latest thekevjames_ssl
               "
             fi
+
+workflows:
+  version: 2
+  check-build-and-deploy:
+    jobs:
+      - check
+      - nginx:
+          requires:
+            - check
+      - ssl:
+          requires:
+            - check
+      - deploy:
+          requires:
+            - nginx
+            - ssl
