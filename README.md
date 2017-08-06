@@ -16,8 +16,10 @@ latter is used to configure and renew ssl certificates across each project.
 
 Initial usage requires a bootstrapping process:
 
-    # grab docker config
+    # grab docker config and images
     curl https://raw.githubusercontent.com/TheKevJames/infrastructure/master/docker-compose.yml > nginx.yml
+    docker pull thekevjames/nginx:latest
+    docker pull thekevjames/ssl:latest
 
     # bootstrap ssl
     echo "include /etc/nginx/fragment/ssl.conf;
@@ -56,11 +58,11 @@ without needing to reconfigure. Currently, the mapping is as follows:
 | Port  | Service             |
 | ----- | ------------------- |
 | 80    | nginx               |
+| 443   | nginx (ssl)         |
 | 19999 | netdata             |
 | 28001 | devstat             |
 | 28002 | devstat (api)       |
 | 28003 | youshouldread       |
 | 28004 | youshouldread (api) |
-| 28005 | thekev.in           |
 | 28006 | league              |
 | 28007 | jarvis              |
