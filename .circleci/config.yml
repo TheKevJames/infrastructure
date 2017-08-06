@@ -70,7 +70,8 @@ jobs:
               docker push "thekevjames/ssl:latest"
             fi
 
-    deploy:
+  deploy:
+    steps:
       - deploy:
           name: deploy images
           command: |

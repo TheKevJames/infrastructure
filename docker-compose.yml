@@ -33,7 +33,7 @@ services:
         parallelism: 1
         monitor: 20s
     volumes:
-      - certs:/etc/letsencrypt/live/thekev.in
+      - certs:/etc/letsencrypt/live
       - webroot:/etc/letsencrypt/webroot
 
 volumes:
