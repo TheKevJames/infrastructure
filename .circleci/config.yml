@@ -19,7 +19,7 @@ jobs:
           command: |
             pre-commit run --all-files
 
-  nginx:
+  build-nginx:
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
@@ -35,15 +35,19 @@ jobs:
             docker tag nginx "thekevjames/nginx:${CIRCLE_SHA1}"
             docker tag nginx "thekevjames/nginx:latest"
 
+  push-nginx:
+    docker:
+      - image: docker:17.05.0-ce-git
+
+    steps:
       - deploy:
           name: push image
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
 
-              docker push "thekevjames/nginx:${CIRCLE_SHA1}"
-              docker push "thekevjames/nginx:latest"
-            fi
+            docker push "thekevjames/nginx:${CIRCLE_SHA1}"
+            docker push "thekevjames/nginx:latest"
+
   ssl:
     working_directory: /app
     docker:
@@ -60,6 +64,11 @@ jobs:
             docker tag ssl "thekevjames/ssl:${CIRCLE_SHA1}"
             docker tag ssl "thekevjames/ssl:latest"
 
+  push-nginx:
+    docker:
+      - image: docker:17.05.0-ce-git
+
+    steps:
       - deploy:
           name: push image
           command: |
@@ -78,25 +87,40 @@ jobs:
       - deploy:
           name: deploy images
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ssh -oStrictHostKeyChecking=no ubuntu@thekev.in "
-                docker service update --image thekevjames/nginx:latest thekevjames_nginx
-                docker service update --image thekevjames/ssl:latest thekevjames_ssl
-              "
-            fi
+            ssh -oStrictHostKeyChecking=no ubuntu@thekev.in "
+              docker service update --image thekevjames/nginx:latest thekevjames_nginx
+              docker service update --image thekevjames/ssl:latest thekevjames_ssl
+            "
 
 workflows:
   version: 2
   check-build-and-deploy:
     jobs:
       - check
-      - nginx:
+      - build-nginx:
           requires:
             - check
-      - ssl:
+      - push-nginx:
+          context: org-global
+          filters:
+            branches:
+              only: master
+          requires:
+            - build-nginx
+      - build-ssl:
           requires:
             - check
+      - push-ssl:
+          context: org-global
+          filters:
+            branches:
+              only: master
+          requires:
+            - build-ssl
       - deploy:
           requires:
-            - nginx
-            - ssl
+            - push-nginx
+            - push-ssl
+          filters:
+            branches:
+              only: master
