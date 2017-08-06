@@ -1,0 +1,49 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: install dependencies
+          command: |
+            apk add --no-cache py-pip=9.0.0-r1
+            pip install pre-commit
+
+      - run:
+          name: run pre-build tests
+          command: |
+            pre-commit run --all-files
+
+      - run:
+          name: build image
+          command: |
+            docker build -t nginx nginx/
+
+      - deploy:
+          name: push image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+
+              docker tag nginx "thekevjames/nginx:${CIRCLE_SHA1}"
+              docker tag nginx "thekevjames/nginx:latest"
+
+              docker push "thekevjames/nginx:${CIRCLE_SHA1}"
+              docker push "thekevjames/nginx:latest"
+            fi
+
+      - deploy:
+          name: deploy image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ssh -oStrictHostKeyChecking=no ubuntu@thekev.in "
+                docker service update --image thekevjames/nginx:latest thekevjames_nginx
+              "
+            fi

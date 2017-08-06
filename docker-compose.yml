@@ -1,14 +1,31 @@
-version: '2'
+version: '3.2'
 
 services:
   nginx:
-    build: nginx/
-    image: thekevjames/infrastructure-nginx
-    hostname: nginx
-    network_mode: host
+    image: thekevjames/infrastructure-nginx:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 20s
+      update_config:
+        parallelism: 1
+        monitor: 20s
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./webroot:/usr/share/nginx/volume
-      - /etc/letsencrypt:/ssl
+    secrets:
+      - source: ssl_fullchain
+        target: /ssl/fullchain.pem
+      - source: ssl_privkey
+        target: /ssl/privkey.pem
+
+secrets:
+  ssl_fullchain:
+    file: /etc/letsencrypt/live/thekev.in/fullchain.pem
+  ssl_privkey:
+    file: /etc/letsencrypt/live/thekev.in/privkey.pem
