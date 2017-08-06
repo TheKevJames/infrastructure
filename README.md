@@ -31,7 +31,7 @@ Initial usage requires a bootstrapping process:
     COPY cert.conf /etc/nginx/fragment/cert.conf" > Dockerfile
     docker build -t temp .
     docker service create --name temp --mount type=volume,source=thekevjames_webroot,destination=/usr/share/nginx/volume -p 80:80 -p 443:443 temp
-    docker run --rm -v thekevjames_certs:/etc/letsencrypt/live -v thekevjames_webroot:/etc/letsencrypt/webroot -it thekevjames/ssl:latest generate-certs
+    docker run --rm -v thekevjames_certs:/etc/letsencrypt -v thekevjames_webroot:/webroot -it thekevjames/ssl:latest generate-certs
     docker service rm temp
     docker rmi temp
 
