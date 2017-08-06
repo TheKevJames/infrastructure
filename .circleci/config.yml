@@ -4,16 +4,13 @@ jobs:
   check:
     docker:
       - image: docker:17.05.0-ce-git
-
     steps:
       - checkout
-
       - run:
           name: install dependencies
           command: |
             apk add --no-cache py-pip=9.0.0-r1
             pip install pre-commit
-
       - run:
           name: run pre-build tests
           command: |
@@ -23,11 +20,9 @@ jobs:
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
-
     steps:
       - checkout
       - setup_remote_docker
-
       - run:
           name: build image
           command: |
@@ -38,8 +33,8 @@ jobs:
   push-nginx:
     docker:
       - image: docker:17.05.0-ce-git
-
     steps:
+      - setup_remote_docker
       - deploy:
           name: push image
           command: |
@@ -52,11 +47,9 @@ jobs:
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
-
     steps:
       - checkout
       - setup_remote_docker
-
       - run:
           name: build image
           command: |
@@ -64,25 +57,22 @@ jobs:
             docker tag ssl "thekevjames/ssl:${CIRCLE_SHA1}"
             docker tag ssl "thekevjames/ssl:latest"
 
-  push-nginx:
+  push-ssl:
     docker:
       - image: docker:17.05.0-ce-git
-
     steps:
+      - setup_remote_docker
       - deploy:
           name: push image
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
 
-              docker push "thekevjames/ssl:${CIRCLE_SHA1}"
-              docker push "thekevjames/ssl:latest"
-            fi
+            docker push "thekevjames/ssl:${CIRCLE_SHA1}"
+            docker push "thekevjames/ssl:latest"
 
   deploy:
     docker:
       - image: docker:17.05.0-ce-git
-
     steps:
       - deploy:
           name: deploy images
@@ -97,6 +87,7 @@ workflows:
   check-build-and-deploy:
     jobs:
       - check
+
       - build-nginx:
           requires:
             - check
@@ -107,6 +98,7 @@ workflows:
               only: master
           requires:
             - build-nginx
+
       - build-ssl:
           requires:
             - check
@@ -117,6 +109,7 @@ workflows:
               only: master
           requires:
             - build-ssl
+
       - deploy:
           requires:
             - push-nginx
