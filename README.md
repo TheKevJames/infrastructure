@@ -4,38 +4,48 @@ This project is used to configure routing of my various projects.
 
 ## Usage
 
-    docker-compose build
-    docker-compose up -d
+### Terraform
 
-### Deploy
+State management for physical infrastructure. About to be heavily modified.
 
-Since you only really need the `docker-compose.yml` file for deployment, you
-can deploy with:
+### Docker
 
-    curl https://raw.githubusercontent.com/TheKevJames/infrastructure/master/docker-compose.yml > docker-compose.yml
-    mkdir -p nginx  # docker-compose oddity
-    docker-compose pull
-    docker-compose up -d
+This repository defines two docker images: `nginx` and `ssl`. The former is a
+reverse-proxy meant to be run in the same swarm as the rest of my projects. The
+latter is used to configure and renew ssl certificates across each project.
 
-### SSL
+Initial usage requires a bootstrapping process:
 
-SSL verification uses [Let's Encrypt](https://letsencrypt.org/). To enable SSL
-on a new machine, start the NGINX proxy and run:
+    # grab docker config
+    curl https://raw.githubusercontent.com/TheKevJames/infrastructure/master/docker-compose.yml > nginx.yml
 
-    sudo letsencrypt certonly -a webroot --webroot-path=./webroot \
-        -d thekev.in -d www.thekev.in \
-        -d devstat.thekev.in -d api.devstat.thekev.in \
-        -d jarvis.thekev.in \
-        -d league.thekev.in \
-        -d netdata.thekev.in -d status.thekev.in \
-        -d youshouldread.thekev.in -d ysr.thekev.in
+    # bootstrap ssl
+    echo "include /etc/nginx/fragment/ssl.conf;
 
-You should also modify your crontab, to enable auto-renewal:
+    location ~ /.well-known {
+        root   /usr/share/nginx/volume;
+        allow  all;
+    }" > cert.conf
+    echo "FROM thekevjames/nginx
 
-```crontab
-30 2 * * 1 sudo /usr/bin/letsencrypt renew >> /var/log/le-renew.log
-35 2 * * 1 cd /path/to/infrastructure && /usr/local/bin/docker-compose up -d
-```
+    COPY cert.conf /etc/nginx/fragment/cert.conf" > Dockerfile
+    docker build -t temp .
+    docker service create --name temp --mount type=volume,source=thekevjames_webroot,destination=/usr/share/nginx/volume -p 80:80 -p 443:443 temp
+    docker run --rm -v thekevjames_certs:/etc/letsencrypt/live -v thekevjames_webroot:/etc/letsencrypt/webroot -it thekevjames/ssl:latest generate-certs
+    docker service rm temp
+    docker rmi temp
+
+This bootstrapping will generate the required certificate volumes. After this,
+this project can be used normally as follows:
+
+    # run services
+    docker stack deploy -c nginx.yml thekevjames
+
+    # update services
+    docker service update --force thekevjames_nginx
+    docker service update --force thekevjames_ssl
+
+TODO: force nginx update after ssl cert renew.
 
 ## Notes
 

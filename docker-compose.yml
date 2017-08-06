@@ -17,7 +17,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - certs:/ssl/certs
+      - certs:/ssl
       - webroot:/usr/share/nginx/volume
 
   ssl:
@@ -33,8 +33,8 @@ services:
         parallelism: 1
         monitor: 20s
     volumes:
-      - certs:/etc/letsencrypt/live
-      - webroot:/etc/letsencrypt/webroot
+      - certs:/etc/letsencrypt
+      - webroot:/webroot
 
 volumes:
   certs:
