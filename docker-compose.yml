@@ -5,7 +5,7 @@ services:
     image: thekevjames/nginx:latest
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
         delay: 5s
