@@ -71,6 +71,9 @@ jobs:
             fi
 
   deploy:
+    docker:
+      - image: docker:17.05.0-ce-git
+
     steps:
       - deploy:
           name: deploy images
