@@ -11,13 +11,9 @@ jobs:
           command: |
             apk add --no-cache py-pip=9.0.0-r1
             pip install pre-commit
-      - run:
-          name: run pre-build tests
-          command: |
-            pre-commit run --all-files
+      - run: pre-commit run --all-files
 
   nginx:
-    working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
     steps:
@@ -40,7 +36,6 @@ jobs:
             fi
 
   ssl:
-    working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
     steps:
