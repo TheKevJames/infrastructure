@@ -64,5 +64,4 @@ without needing to reconfigure. Currently, the mapping is as follows:
 | 28002 | devstat (api)       |
 | 28003 | youshouldread       |
 | 28004 | youshouldread (api) |
-| 28006 | league              |
 | 28007 | jarvis              |
