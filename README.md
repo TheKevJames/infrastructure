@@ -60,8 +60,6 @@ without needing to reconfigure. Currently, the mapping is as follows:
 | 80    | nginx               |
 | 443   | nginx (ssl)         |
 | 19999 | netdata             |
-| 28001 | devstat             |
-| 28002 | devstat (api)       |
 | 28003 | youshouldread       |
 | 28004 | youshouldread (api) |
 | 28007 | jarvis              |
