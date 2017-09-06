@@ -26,18 +26,18 @@ jobs:
       - deploy:
           name: push image (hash)
           command: |
-            docker tag web "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
+            docker tag nginx "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
             docker push "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
       - deploy:
           name: push image (branch)
           command: |
-            docker tag web "thekevjames/nginx:${CIRCLE_BRANCH}"
+            docker tag nginx "thekevjames/nginx:${CIRCLE_BRANCH}"
             docker push "thekevjames/nginx:${CIRCLE_BRANCH}"
       - deploy:
           name: push image (latest)
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker tag web thekevjames/nginx:latest
+              docker tag nginx thekevjames/nginx:latest
               docker push thekevjames/nginx:latest
             fi
 
@@ -54,18 +54,18 @@ jobs:
       - deploy:
           name: push image (hash)
           command: |
-            docker tag web "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
+            docker tag ssl "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
             docker push "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
       - deploy:
           name: push image (branch)
           command: |
-            docker tag web "thekevjames/ssl:${CIRCLE_BRANCH}"
+            docker tag ssl "thekevjames/ssl:${CIRCLE_BRANCH}"
             docker push "thekevjames/ssl:${CIRCLE_BRANCH}"
       - deploy:
           name: push image (latest)
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker tag web thekevjames/ssl:latest
+              docker tag ssl thekevjames/ssl:latest
               docker push thekevjames/ssl:latest
             fi
 
