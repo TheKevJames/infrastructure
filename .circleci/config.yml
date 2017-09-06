@@ -19,20 +19,26 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: build image
-          command: |
-            docker build -t nginx nginx/
-            docker tag nginx "thekevjames/nginx:${CIRCLE_SHA1}"
-            docker tag nginx "thekevjames/nginx:latest"
+      - run: docker build -t nginx nginx/
       - deploy:
-          name: push image
+          name: login to dockerhub
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - deploy:
+          name: push image (hash)
+          command: |
+            docker tag web "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
+            docker push "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
+      - deploy:
+          name: push image (branch)
+          command: |
+            docker tag web "thekevjames/nginx:${CIRCLE_BRANCH}"
+            docker push "thekevjames/nginx:${CIRCLE_BRANCH}"
+      - deploy:
+          name: push image (latest)
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-
-              docker push "thekevjames/nginx:${CIRCLE_SHA1}"
-              docker push "thekevjames/nginx:latest"
+              docker tag web thekevjames/nginx:latest
+              docker push thekevjames/nginx:latest
             fi
 
   ssl:
@@ -41,20 +47,26 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: build image
-          command: |
-            docker build -t ssl ssl/
-            docker tag ssl "thekevjames/ssl:${CIRCLE_SHA1}"
-            docker tag ssl "thekevjames/ssl:latest"
+      - run: docker build -t ssl ssl/
       - deploy:
-          name: push image
+          name: login to dockerhub
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - deploy:
+          name: push image (hash)
+          command: |
+            docker tag web "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
+            docker push "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
+      - deploy:
+          name: push image (branch)
+          command: |
+            docker tag web "thekevjames/ssl:${CIRCLE_BRANCH}"
+            docker push "thekevjames/ssl:${CIRCLE_BRANCH}"
+      - deploy:
+          name: push image (latest)
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-
-              docker push "thekevjames/ssl:${CIRCLE_SHA1}"
-              docker push "thekevjames/ssl:latest"
+              docker tag web thekevjames/ssl:latest
+              docker push thekevjames/ssl:latest
             fi
 
   deploy:
@@ -65,8 +77,8 @@ jobs:
           name: deploy images
           command: |
             ssh -oStrictHostKeyChecking=no ubuntu@thekev.in "
-              docker service update --image thekevjames/nginx:latest thekevjames_nginx
-              docker service update --image thekevjames/ssl:latest thekevjames_ssl
+              docker service update --image "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_nginx
+              docker service update --image "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_ssl
             "
 
 workflows:
