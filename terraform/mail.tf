@@ -1,29 +1,43 @@
+resource "cloudflare_record" "email" {
+    domain = "${var.cloudflare_domain}"
+    name = "email"
+    type = "CNAME"
+
+    proxied = false
+
+    value = "mailgun.org"
+}
+
 resource "cloudflare_record" "dkim" {
     domain = "${var.cloudflare_domain}"
     name = "krs._domainkey"
-    value = "${var.cloudflare_dkim}"
     type = "TXT"
+
+    value = "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCT7TjG15xvCb7Bl1gAF8VrSHr4paJqkJLiGv+Q9YMVQO9+c8MAwGQcLTxiiMNY52jFcjhPIeg0OZOR+ORfKlxUQHCj1EzqQWoTCcV95RKwCudi2duh4Wqv+sZkqs//FRX0fEIdBS5K79vDftkWgeKqtbiskHa+eVxdMj6aPIDMrwIDAQAB"
 }
 
 resource "cloudflare_record" "spf" {
     domain = "${var.cloudflare_domain}"
     name = "@"
-    value = "v=spf1 include:mailgun.org ~all"
     type = "TXT"
+
+    value = "v=spf1 include:mailgun.org ~all"
 }
 
 resource "cloudflare_record" "mxa" {
     domain = "${var.cloudflare_domain}"
     name = "@"
-    value = "mxa.mailgun.org"
     type = "MX"
+
     priority = 10
+    value = "mxa.mailgun.org"
 }
 
 resource "cloudflare_record" "mxb" {
     domain = "${var.cloudflare_domain}"
     name = "@"
-    value = "mxb.mailgun.org"
     type = "MX"
+
     priority = 10
+    value = "mxb.mailgun.org"
 }

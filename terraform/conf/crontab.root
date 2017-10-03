@@ -1,3 +1,0 @@
-# m h  dom mon dow   command
-*/10 * * * * echo 1 > /proc/sys/vm/drop_caches
-30 2 * * 1 /usr/bin/letsencrypt renew >> /var/log/le-renew.log

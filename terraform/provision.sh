@@ -1,49 +1,30 @@
-# set secrets in ~/.load_env.sh
-echo ". /home/ubuntu/load_env.sh" >> ~/.bashrc
+# install docker
+# https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository
+sudo apt-get update
+sudo apt-get install -qy \
+     apt-transport-https \
+     ca-certificates \
+     curl \
+     git \
+     gnupg2 \
+     software-properties-common
 
-mkdir ~/infrastructure && cd ~/infrastructure
-curl https://raw.githubusercontent.com/TheKevJames/infrastructure/master/docker-compose.yml > docker-compose.yml
-mkdir -p nginx
-docker-compose pull
+curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
+   $(lsb_release -cs) \
+   stable"
 
-mkdir ~/league && cd ~/league
-curl https://raw.githubusercontent.com/TheKevJames/league/master/docker-compose.yml > docker-compose.yml
-docker-compose pull
-docker-compose up -d
+sudo apt-get update
+sudo apt-get install -qy docker-ce
 
-mkdir ~/thekev.in && cd ~/thekev.in
-curl https://raw.githubusercontent.com/TheKevJames/thekev.in/master/docker-compose.yml > docker-compose.yml
-mkdir -p web
-docker-compose pull
-docker-compose up -d
+# install docker-compose
+sudo apt-get install -qy python-pip
+sudo pip install docker-compose
 
-cd ~ && git clone https://github.com/thekevjames/devstat.git && cd devstat
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
-cd ~ && git clone https://github.com/thekevjames/jarvis.git && cd jarvis
-# copy db
-docker-compose pull
-docker-compose up -d
-
-curl -Ss 'https://raw.githubusercontent.com/firehol/netdata-demo-site/master/install-required-packages.sh' >/tmp/kickstart.sh && bash /tmp/kickstart.sh -i netdata-all
-cd ~ && git clone https://github.com/firehol/netdata.git --depth=1 && cd netdata
-sudo ./netdata-installer.sh
-
-docker-compose run nginx sh
-echo "include /etc/nginx/fragment/ssl.conf;
-
-location ~ /.well-known {
-    root   /usr/share/nginx/volume;
-    allow  all;
-}" > /etc/nginx/fragment/cert.conf
-nginx -g "daemon off;"
-
-cd ~/infrastructure
-sudo letsencrypt certonly -a webroot --webroot-path=./webroot \
-    -d thekev.in -d www.thekev.in \
-    -d devstat.thekev.in -d api.devstat.thekev.in \
-    -d jarvis.thekev.in \
-    -d league.thekev.in \
-    -d netdata.thekev.in -d status.thekev.in \
-    -d youshouldread.thekev.in -d ysr.thekev.in
-docker-compose down && docker-compose up -d
+# deploy thekev.in
+# deploy devstat
+# deploy jarvis (scp jarvis.db)
+# deploy league
+# deploy youshouldread
+# deploy infrastructure

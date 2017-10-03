@@ -32,7 +32,7 @@ Initial usage requires a bootstrapping process:
 
     COPY cert.conf /etc/nginx/fragment/cert.conf" > Dockerfile
     docker build -t temp .
-    docker service create --name temp --mount type=volume,source=thekevjames_webroot,destination=/usr/share/nginx/volume -p 80:80 -p 443:443 temp
+    docker service create --net thekevjames_default --name temp --mount type=volume,source=thekevjames_webroot,destination=/usr/share/nginx/volume -p 80:80 -p 443:443 temp
     docker run --rm -v thekevjames_certs:/etc/letsencrypt -v thekevjames_webroot:/webroot -it thekevjames/ssl:latest generate-certs
     docker service rm temp
     docker rmi temp
@@ -51,15 +51,5 @@ TODO: force nginx update after ssl cert renew.
 
 ## Notes
 
-This project relies on my personal projects having specific port bindings by
-default. This ensures any combination of services can run on a single machine
-without needing to reconfigure. Currently, the mapping is as follows:
-
-| Port  | Service             |
-| ----- | ------------------- |
-| 80    | nginx               |
-| 443   | nginx (ssl)         |
-| 19999 | netdata             |
-| 28003 | youshouldread       |
-| 28004 | youshouldread (api) |
-| 28007 | jarvis              |
+Most of my apps live in a docker swarm, but Jarvis does not (yet). This project
+relies on Jarvis running on port 28007.
