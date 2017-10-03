@@ -3,14 +3,12 @@ version: 2
 jobs:
   check:
     docker:
-      - image: docker:17.05.0-ce-git
+      # https://github.com/docker-library/python/issues/155
+      # - image: python:3.6.2-alpine
+      - image: python:3.6.2
     steps:
       - checkout
-      - run:
-          name: install dependencies
-          command: |
-            apk add --no-cache py-pip=9.0.0-r1
-            pip install pre-commit
+      - run: pip install pre-commit
       - run: pre-commit run --all-files
 
   nginx:
@@ -76,9 +74,9 @@ jobs:
       - deploy:
           name: deploy images
           command: |
-            ssh -oStrictHostKeyChecking=no ubuntu@thekev.in "
-              docker service update --image "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_nginx
-              docker service update --image "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_ssl
+            ssh -oStrictHostKeyChecking=no kevin@thekev.in "
+              sudo docker service update --image "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_nginx
+              sudo docker service update --image "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_ssl
             "
 
 workflows:
