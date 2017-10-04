@@ -22,6 +22,18 @@ sudo apt-get install -qy docker-ce
 sudo apt-get install -qy python-pip
 sudo pip install docker-compose
 
+# /etc/docker/daemon.json
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-file": "1",
+    "max-size": "100m"
+  }
+}
+
+# /etc/resolv.conf
+nameserver 8.8.8.8
+
 # deploy thekev.in
 # deploy devstat
 # deploy jarvis (scp jarvis.db)
