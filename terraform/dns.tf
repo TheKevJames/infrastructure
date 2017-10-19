@@ -48,6 +48,16 @@ resource "cloudflare_record" "league" {
     value = "${var.cloudflare_domain}"
 }
 
+resource "cloudflare_record" "status" {
+    domain = "${var.cloudflare_domain}"
+    name = "status"
+    type = "CNAME"
+
+    proxied = false
+
+    value = "stats.uptimerobot.com"
+}
+
 resource "cloudflare_record" "www" {
     domain = "${var.cloudflare_domain}"
     name = "www"
