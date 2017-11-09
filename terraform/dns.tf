@@ -28,6 +28,16 @@ resource "cloudflare_record" "devstat_api" {
     value = "${var.cloudflare_domain}"
 }
 
+resource "cloudflare_record" "home" {
+    domain = "${var.cloudflare_domain}"
+    name = "home"
+    type = "A"
+
+    proxied = false
+
+    value = "24.23.233.137"
+}
+
 resource "cloudflare_record" "jarvis" {
     domain = "${var.cloudflare_domain}"
     name = "jarvis"
