@@ -1,2 +1,2 @@
 # m h dom mon dow command
-30 2 * * 1 sudo /usr/bin/letsencrypt renew
+30 2 * * 1 /usr/bin/letsencrypt certonly --renew --webroot -w /webroot -d thekev.in -d www.thekev.in -d devstat.thekev.in -d api.devstat.thekev.in -d jarvis.thekev.in -d league.thekev.in -d youshouldread.thekev.in -d ysr.thekev.in -d api.youshouldread.thekev.in -d api.ysr.thekev.in
