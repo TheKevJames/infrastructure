@@ -1,8 +1,6 @@
 #!/bin/sh
 /usr/bin/letsencrypt certonly --webroot -w /webroot \
     -d thekev.in -d www.thekev.in \
-    -d devstat.thekev.in -d api.devstat.thekev.in \
     -d jarvis.thekev.in \
-    -d league.thekev.in \
     -d youshouldread.thekev.in -d ysr.thekev.in \
     -d api.youshouldread.thekev.in -d api.ysr.thekev.in

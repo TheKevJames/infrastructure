@@ -8,26 +8,6 @@ resource "cloudflare_record" "base" {
     value = "${google_compute_address.gcebox.address}"
 }
 
-resource "cloudflare_record" "devstat" {
-    domain = "${var.cloudflare_domain}"
-    name = "devstat"
-    type = "CNAME"
-
-    proxied = false
-
-    value = "${var.cloudflare_domain}"
-}
-
-resource "cloudflare_record" "devstat_api" {
-    domain = "${var.cloudflare_domain}"
-    name = "api.devstat"
-    type = "CNAME"
-
-    proxied = false
-
-    value = "${var.cloudflare_domain}"
-}
-
 resource "cloudflare_record" "home" {
     domain = "${var.cloudflare_domain}"
     name = "home"
@@ -41,16 +21,6 @@ resource "cloudflare_record" "home" {
 resource "cloudflare_record" "jarvis" {
     domain = "${var.cloudflare_domain}"
     name = "jarvis"
-    type = "CNAME"
-
-    proxied = false
-
-    value = "${var.cloudflare_domain}"
-}
-
-resource "cloudflare_record" "league" {
-    domain = "${var.cloudflare_domain}"
-    name = "league"
     type = "CNAME"
 
     proxied = false

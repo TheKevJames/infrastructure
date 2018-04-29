@@ -34,8 +34,6 @@ nameserver 8.8.8.8
 30 2 * * 1 docker images | awk '/none/ {print $3}' | xargs docker rmi
 
 # deploy thekev.in
-# deploy devstat
 # deploy jarvis (scp jarvis.db)
-# deploy league
 # deploy youshouldread
 # deploy infrastructure

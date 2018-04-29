@@ -1,16 +1,18 @@
 repos:
 -   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v0.9.5
+    sha: v1.2.3
     hooks:
     -   id: check-case-conflict
     -   id: check-executables-have-shebangs
     -   id: check-json
     -   id: check-merge-conflict
     -   id: check-symlinks
+    -   id: check-vcs-permalinks
     -   id: check-xml
     -   id: check-yaml
+        args:
+        - -m
     -   id: detect-private-key
     -   id: end-of-file-fixer
     -   id: file-contents-sorter
-        files: terraform/.gitignore
     -   id: trailing-whitespace
