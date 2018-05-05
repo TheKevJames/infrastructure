@@ -1,14 +1,15 @@
 repository:
   name: infrastructure
-  description: Personal infrastructure for deploying/routing/etc.
-  homepage: https://stats.uptimerobot.com/28m2jCo30
+  description: personal infrastructure for deploying/routing/etc.
+  homepage: https://status.thekev.in/
   private: false
 
   has_issues: true
   has_projects: false
   has_wiki: false
+  has_downloads: false
 
-  allow_merge_commit: true
+  allow_merge_commit: false
   allow_rebase_merge: true
   allow_squash_merge: true
 

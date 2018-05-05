@@ -10,9 +10,17 @@ repos:
     -   id: check-vcs-permalinks
     -   id: check-xml
     -   id: check-yaml
-        args:
-        - -m
+        args: [--allow-multiple-documents]
     -   id: detect-private-key
     -   id: end-of-file-fixer
     -   id: file-contents-sorter
+        files: .gitignore
+    -   id: mixed-line-ending
+        args: [--fix=lf]
     -   id: trailing-whitespace
+# TODO: configure terraform in ci
+# -   repo: git://github.com/antonbabenko/pre-commit-terraform
+#     sha: v1.6.0
+#     hooks:
+#     -   id: terraform_fmt
+#     -   id: terraform_validate_with_variables
