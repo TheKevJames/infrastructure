@@ -1,14 +1,25 @@
 version: 2
 
 jobs:
-  check:
+  lint:
     docker:
-      # https://github.com/docker-library/python/issues/155
-      # - image: python:3.6.2-alpine
-      - image: python:3.6.2
+      - image: python:3.6.4
     steps:
+      # - run:
+      #     name: install terraform
+      #     command: |
+      #       apt-get update
+      #       apt-get install -y unzip
+      #       curl https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip > /terraform.zip
+      #       unzip /terraform.zip -d /usr/local/bin
+      #       chmod a+x /usr/local/bin/terraform
       - checkout
       - run: pip install pre-commit
+      # - run:
+      #     name: terraform init
+      #     command: |
+      #       cd terraform
+      #       terraform init
       - run: pre-commit run --all-files
 
   nginx:
@@ -81,20 +92,17 @@ jobs:
 
 workflows:
   version: 2
-  check-build-and-deploy:
+  run-jobs:
     jobs:
-      - check
-
+      - lint
       - nginx:
           context: org-global
           requires:
-            - check
-
+            - lint
       - ssl:
           context: org-global
           requires:
-            - check
-
+            - lint
       - deploy:
           requires:
             - nginx
