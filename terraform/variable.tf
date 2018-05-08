@@ -5,6 +5,10 @@ variable "cloudflare_domain" {
   default = "thekev.in"
 }
 
+variable "artifacts_url" {
+  default = "https://storage.googleapis.com/thekevjames-artifacts"
+}
+
 variable "google_project_id" {
   default = "thekevjames-175823"
 }
