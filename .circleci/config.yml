@@ -4,7 +4,10 @@ jobs:
   lint:
     docker:
       - image: python:3.6.4
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /gcloud-service-key.json
     steps:
+      - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - run:
           name: install terraform
           command: |
@@ -21,7 +24,10 @@ jobs:
   terraform:
     docker:
       - image: hashicorp/terraform:0.11.7
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /gcloud-service-key.json
     steps:
+      - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - checkout
       - run: terraform init
       - run: terraform apply
