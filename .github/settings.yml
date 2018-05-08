@@ -1,7 +1,6 @@
 repository:
   name: infrastructure
   description: personal infrastructure for deploying/routing/etc.
-  homepage: https://status.thekev.in/
   private: false
 
   has_issues: true
