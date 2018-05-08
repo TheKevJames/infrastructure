@@ -1,2 +1,0 @@
-#!/bin/sh
-/usr/bin/letsencrypt certonly --webroot -w /webroot -d thekev.in -d www.thekev.in

@@ -18,9 +18,8 @@ repos:
     -   id: mixed-line-ending
         args: [--fix=lf]
     -   id: trailing-whitespace
-# TODO: configure terraform in ci
-# -   repo: git://github.com/antonbabenko/pre-commit-terraform
-#     sha: v1.6.0
-#     hooks:
-#     -   id: terraform_fmt
-#     -   id: terraform_validate_with_variables
+-   repo: git://github.com/antonbabenko/pre-commit-terraform
+    sha: v1.6.0
+    hooks:
+    -   id: terraform_fmt
+    -   id: terraform_validate_with_variables

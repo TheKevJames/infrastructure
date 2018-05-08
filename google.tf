@@ -1,5 +1,5 @@
 resource "cloudflare_record" "verify" {
-  domain = "${var.cloudflare_domain}"
+  domain = "${var.domain}"
   name   = "@"
   type   = "TXT"
 

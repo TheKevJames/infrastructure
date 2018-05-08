@@ -5,108 +5,35 @@ jobs:
     docker:
       - image: python:3.6.4
     steps:
-      # - run:
-      #     name: install terraform
-      #     command: |
-      #       apt-get update
-      #       apt-get install -y unzip
-      #       curl https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip > /terraform.zip
-      #       unzip /terraform.zip -d /usr/local/bin
-      #       chmod a+x /usr/local/bin/terraform
+      - run:
+          name: install terraform
+          command: |
+            apt-get update
+            apt-get install -y unzip
+            curl -o /terraform.zip https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+            unzip /terraform.zip -d /usr/local/bin
+            chmod a+x /usr/local/bin/terraform
       - checkout
       - run: pip install pre-commit
-      # - run:
-      #     name: terraform init
-      #     command: |
-      #       cd terraform
-      #       terraform init
+      - run: terraform init
       - run: pre-commit run --all-files
 
-  nginx:
+  terraform:
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: hashicorp/terraform:0.11.7
     steps:
       - checkout
-      - setup_remote_docker
-      - run: docker build -t nginx nginx/
-      - deploy:
-          name: login to dockerhub
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-      - deploy:
-          name: push image (hash)
-          command: |
-            docker tag nginx "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
-            docker push "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
-      - deploy:
-          name: push image (branch)
-          command: |
-            docker tag nginx "thekevjames/nginx:${CIRCLE_BRANCH}"
-            docker push "thekevjames/nginx:${CIRCLE_BRANCH}"
-      - deploy:
-          name: push image (latest)
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker tag nginx thekevjames/nginx:latest
-              docker push thekevjames/nginx:latest
-            fi
-
-  ssl:
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run: docker build -t ssl ssl/
-      - deploy:
-          name: login to dockerhub
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-      - deploy:
-          name: push image (hash)
-          command: |
-            docker tag ssl "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
-            docker push "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}"
-      - deploy:
-          name: push image (branch)
-          command: |
-            docker tag ssl "thekevjames/ssl:${CIRCLE_BRANCH}"
-            docker push "thekevjames/ssl:${CIRCLE_BRANCH}"
-      - deploy:
-          name: push image (latest)
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker tag ssl thekevjames/ssl:latest
-              docker push thekevjames/ssl:latest
-            fi
-
-  deploy:
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
-      - deploy:
-          name: deploy images
-          command: |
-            ssh -oStrictHostKeyChecking=no kevin@thekev.in "
-              sudo docker service update --image "thekevjames/nginx:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_nginx
-              sudo docker service update --image "thekevjames/ssl:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:8}" thekevjames_ssl
-            "
+      - run: terraform init
+      - run: terraform apply
 
 workflows:
   version: 2
   run-jobs:
     jobs:
       - lint
-      - nginx:
-          context: org-global
-          requires:
-            - lint
-      - ssl:
-          context: org-global
-          requires:
-            - lint
-      - deploy:
-          requires:
-            - nginx
-            - ssl
+      - terraform:
           filters:
             branches:
               only: master
+          requires:
+            - lint
