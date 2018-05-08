@@ -21,7 +21,7 @@ resource "cloudflare_record" "www" {
 resource "cloudflare_page_rule" "redirect-cv" {
   zone     = "${var.cloudflare_domain}"
   target   = "${var.cloudflare_domain}/cv"
-  priority = 10
+  priority = 1
 
   actions = {
     forwarding_url {
@@ -34,7 +34,7 @@ resource "cloudflare_page_rule" "redirect-cv" {
 resource "cloudflare_page_rule" "redirect-hexclock" {
   zone     = "${var.cloudflare_domain}"
   target   = "${var.cloudflare_domain}/hexclock"
-  priority = 10
+  priority = 2
 
   actions = {
     forwarding_url {
@@ -47,7 +47,7 @@ resource "cloudflare_page_rule" "redirect-hexclock" {
 resource "cloudflare_page_rule" "redirect-quotes" {
   zone     = "${var.cloudflare_domain}"
   target   = "${var.cloudflare_domain}/quotes"
-  priority = 10
+  priority = 3
 
   actions = {
     forwarding_url {
@@ -60,7 +60,7 @@ resource "cloudflare_page_rule" "redirect-quotes" {
 resource "cloudflare_page_rule" "redirect-quotes-json" {
   zone     = "${var.cloudflare_domain}"
   target   = "${var.cloudflare_domain}/quotes/json"
-  priority = 10
+  priority = 4
 
   actions = {
     forwarding_url {
