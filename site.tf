@@ -8,6 +8,16 @@ resource "cloudflare_record" "base" {
   value = "c.storage.googleapis.com"
 }
 
+resource "cloudflare_record" "www" {
+  domain = "${var.domain}"
+  name   = "www"
+  type   = "CNAME"
+
+  proxied = true
+
+  value = "c.storage.googleapis.com"
+}
+
 resource "cloudflare_page_rule" "redirect-cv" {
   zone     = "${var.domain}"
   target   = "${var.domain}/cv"
