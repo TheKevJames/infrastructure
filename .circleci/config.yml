@@ -3,7 +3,7 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: python:3.7.1
+      - image: python:3.7.4
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /gcloud-service-key.json
     steps:
