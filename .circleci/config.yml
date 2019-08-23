@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 jobs:
   lint:
@@ -41,7 +41,6 @@ jobs:
       - run: terraform apply -auto-approve
 
 workflows:
-  version: 2
   run-jobs:
     jobs:
       - lint
