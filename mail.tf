@@ -1,5 +1,5 @@
 resource "cloudflare_record" "email" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "email"
   type    = "CNAME"
 
@@ -9,7 +9,7 @@ resource "cloudflare_record" "email" {
 }
 
 resource "cloudflare_record" "dkim" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "krs._domainkey"
   type    = "TXT"
 
@@ -17,7 +17,7 @@ resource "cloudflare_record" "dkim" {
 }
 
 resource "cloudflare_record" "spf" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "@"
   type    = "TXT"
 
@@ -25,7 +25,7 @@ resource "cloudflare_record" "spf" {
 }
 
 resource "cloudflare_record" "mxa" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "@"
   type    = "MX"
 
@@ -34,7 +34,7 @@ resource "cloudflare_record" "mxa" {
 }
 
 resource "cloudflare_record" "mxb" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "@"
   type    = "MX"
 

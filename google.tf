@@ -1,5 +1,5 @@
 resource "cloudflare_record" "verify" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "@"
   type    = "TXT"
 

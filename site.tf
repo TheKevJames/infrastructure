@@ -1,5 +1,5 @@
 resource "cloudflare_record" "base" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "@"
   type    = "CNAME"
 
@@ -9,7 +9,7 @@ resource "cloudflare_record" "base" {
 }
 
 resource "cloudflare_record" "www" {
-  zone_id = "${var.zone}"
+  zone_id = var.zone
   name    = "www"
   type    = "CNAME"
 
@@ -19,11 +19,11 @@ resource "cloudflare_record" "www" {
 }
 
 resource "cloudflare_page_rule" "redirect-cv" {
-  zone_id  = "${var.zone}"
+  zone_id  = var.zone
   target   = "${var.domain}/cv"
   priority = 1
 
-  actions = {
+  actions {
     forwarding_url {
       url         = "${var.artifacts_url}/cv.pdf"
       status_code = 301
@@ -32,11 +32,11 @@ resource "cloudflare_page_rule" "redirect-cv" {
 }
 
 resource "cloudflare_page_rule" "redirect-hexclock" {
-  zone_id  = "${var.zone}"
+  zone_id  = var.zone
   target   = "${var.domain}/hexclock"
   priority = 2
 
-  actions = {
+  actions {
     forwarding_url {
       url         = "${var.artifacts_url}/hexclock/hexclock.html"
       status_code = 301
@@ -45,11 +45,11 @@ resource "cloudflare_page_rule" "redirect-hexclock" {
 }
 
 resource "cloudflare_page_rule" "redirect-quotes" {
-  zone_id  = "${var.zone}"
+  zone_id  = var.zone
   target   = "${var.domain}/quotes"
   priority = 3
 
-  actions = {
+  actions {
     forwarding_url {
       url         = "${var.artifacts_url}/quotes/quotes.html"
       status_code = 301
