@@ -12,9 +12,9 @@ jobs:
     steps:
       - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - run:
-          name: install dependencies
+          name: install python
           command: |
-            apk add -U bash gcc musl-dev python3 python3-dev
+            apk add -U bash python3
             ln -s /usr/bin/python3 /usr/bin/python
       - checkout
       - run: terraform init
