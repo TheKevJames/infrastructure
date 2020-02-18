@@ -1,8 +1,8 @@
 provider "cloudflare" {
-  version = "1.18.1"
+  version = "2.3.0"
 
-  email = "${var.cloudflare_email}"
-  token = "${var.cloudflare_token}"
+  email   = "${var.cloudflare_email}"
+  api_key = "${var.cloudflare_token}"
 }
 
 provider "google" {

@@ -1,7 +1,7 @@
 resource "cloudflare_record" "base" {
-  domain = "${var.domain}"
-  name   = "@"
-  type   = "CNAME"
+  zone_id = "${var.zone}"
+  name    = "@"
+  type    = "CNAME"
 
   proxied = true
 
@@ -9,9 +9,9 @@ resource "cloudflare_record" "base" {
 }
 
 resource "cloudflare_record" "www" {
-  domain = "${var.domain}"
-  name   = "www"
-  type   = "CNAME"
+  zone_id = "${var.zone}"
+  name    = "www"
+  type    = "CNAME"
 
   proxied = true
 
@@ -19,7 +19,7 @@ resource "cloudflare_record" "www" {
 }
 
 resource "cloudflare_page_rule" "redirect-cv" {
-  zone     = "${var.domain}"
+  zone_id  = "${var.zone}"
   target   = "${var.domain}/cv"
   priority = 1
 
@@ -32,7 +32,7 @@ resource "cloudflare_page_rule" "redirect-cv" {
 }
 
 resource "cloudflare_page_rule" "redirect-hexclock" {
-  zone     = "${var.domain}"
+  zone_id  = "${var.zone}"
   target   = "${var.domain}/hexclock"
   priority = 2
 
@@ -45,7 +45,7 @@ resource "cloudflare_page_rule" "redirect-hexclock" {
 }
 
 resource "cloudflare_page_rule" "redirect-quotes" {
-  zone     = "${var.domain}"
+  zone_id  = "${var.zone}"
   target   = "${var.domain}/quotes"
   priority = 3
 
