@@ -1,33 +1,24 @@
 version: 2.1
 
+orbs:
+  linter: thekevjames/linter@1
+
 jobs:
   lint:
     docker:
-      - image: python:3.7.5
+      - image: hashicorp/terraform:0.12.20
     environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /gcloud-service-key.json
+      GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
       - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - run:
-          name: install terraform
+          name: install python
           command: |
-            apt-get update
-            apt-get install -y unzip
-            curl -o /terraform.zip https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
-            unzip /terraform.zip -d /usr/local/bin
-            chmod a+x /usr/local/bin/terraform
+            apk add -U bash python3
+            ln -s /usr/bin/python3 /usr/bin/python
       - checkout
-      - run: pip install pre-commit
-      - restore_cache:
-          keys:
-            - cache-pre-commit-{{ checksum ".pre-commit-config.yaml" }}
-      - run: pre-commit install-hooks
-      - save_cache:
-          key: cache-pre-commit-{{ checksum ".pre-commit-config.yaml" }}
-          paths:
-            - ~/.cache/pre-commit
       - run: terraform init
-      - run: pre-commit run --all-files
+      - linter/pre-commit
 
   terraform:
     docker:
