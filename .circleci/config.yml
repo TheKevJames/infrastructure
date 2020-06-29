@@ -6,7 +6,7 @@ orbs:
 jobs:
   lint:
     docker:
-      - image: hashicorp/terraform:0.12.26
+      - image: hashicorp/terraform:0.12.28
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
@@ -22,7 +22,7 @@ jobs:
 
   terraform:
     docker:
-      - image: hashicorp/terraform:0.12.26
+      - image: hashicorp/terraform:0.12.28
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /gcloud-service-key.json
     steps:
