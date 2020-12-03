@@ -1,5 +1,5 @@
 provider "cloudflare" {
-  version = "2.13.2"
+  version = "2.14.0"
 
   email   = var.cloudflare_email
   api_key = var.cloudflare_token
