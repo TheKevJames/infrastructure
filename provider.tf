@@ -6,7 +6,7 @@ provider "cloudflare" {
 }
 
 provider "google" {
-  version = "3.51.1"
+  version = "3.52.0"
 
   project = "thekevjames-175823"
   region  = "us-central1"
