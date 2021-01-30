@@ -1,5 +1,6 @@
 variable "cloudflare_email" {}
 variable "cloudflare_token" {}
+variable "poe_secret_key" {}
 
 variable "artifacts_url" {
   default = "https://storage.googleapis.com/thekevjames-artifacts"
