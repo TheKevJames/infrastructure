@@ -25,6 +25,8 @@ spec:
     - name: poe
       image: 'thekevjames/poe:latest'
       env:
+        - name: PORT
+          value: 80
         - name: SECRET_KEY_BASE
           value: ${var.poe_secret_key}
       stdin: false
