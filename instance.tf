@@ -37,6 +37,8 @@ EOF
     google-logging-enabled    = "true"
     google-monitoring-enabled = "true"
     user-data                 = <<EOF
+#cloud-config
+
 write_files:
 - path: /var/lib/docker/daemon.json
   permissions: 0644
@@ -65,4 +67,14 @@ EOF
     email  = google_service_account.app-poe.email
     scopes = []
   }
+}
+
+resource "cloudflare_record" "poe" {
+  zone_id = var.zone
+  name    = "poe"
+  type    = "A"
+
+  proxied = true
+
+  value = google_compute_instance.poe.network_interface.0.access_config.0.nat_ip
 }
