@@ -1,7 +1,8 @@
 data "google_compute_default_service_account" "default" {}
 
 resource "google_compute_address" "poe" {
-  name = "poe"
+  name   = "poe"
+  region = "us-west1"
 }
 
 # gcloud compute instances create-with-container poe \
@@ -10,13 +11,13 @@ resource "google_compute_address" "poe" {
 #   --container-env=PORT=80 \
 #   --container-env=SECRET_KEY_BASE=${SECRET_KEY_BASE} \
 #   --machine-type=f1-micro \
-#   --zone=us-west3-a \
+#   --zone=us-west1-a \
 #   --scopes=logging-write,monitoring-write,service-management,service-control,trace \
 #   --address=1.2.3.4
 resource "google_compute_instance" "poe" {
   name         = "poe"
   machine_type = "f1-micro"
-  zone         = "us-west3-a"
+  zone         = "us-west1-a"
 
   tags = ["http-server"]
 
@@ -53,7 +54,6 @@ resource "google_compute_instance" "poe" {
     #     volumeMounts: []
     #   restartPolicy: Always
     #   volumes: []
-    # TODO: the other format is below
     gce-container-declaration = <<EOF
 spec:
   containers:
@@ -117,7 +117,7 @@ resource "cloudflare_record" "poe" {
   name    = "poe"
   type    = "A"
 
-  proxied = false # TODO: fixup ssl
+  proxied = true
 
   value = google_compute_instance.poe.network_interface.0.access_config.0.nat_ip
 }
