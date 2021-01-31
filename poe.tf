@@ -101,11 +101,13 @@ write-files:
 - path: /var/cert/cert.pem
   permissions: 0644
   owner: root
-  content: ${base64decode(var.poe_ssl_cert)}
+  encoding: base64
+  content: ${var.poe_ssl_cert}
 - path: /var/cert/key.pem
   permissions: 0644
   owner: root
-  content: ${base64decode(var.poe_ssl_key)}
+  encoding: base64
+  content: ${var.poe_ssl_key}
 EOF
   }
 
@@ -142,8 +144,7 @@ EOF
   timeouts {}
 
   lifecycle {
-    # TODO: figure out a way to allow terraform to ignore *only* the image hash
-    ignore_changes = [labels, metadata.gce-container-declaration]
+    ignore_changes = [labels]
   }
 }
 
