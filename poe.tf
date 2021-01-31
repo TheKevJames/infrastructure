@@ -45,33 +45,68 @@ resource "google_compute_instance" "poe" {
     #         value: '80'
     #       - name: SECRET_KEY_BASE
     #         value: ${var.poe_secret_key}
+    #       - name: SSL_CERT
+    #         value: /cert/cert.pem
+    #       - name: SSL_KEY
+    #         value: /cert/key.pem
     #     image: thekevjames/poe:latest
     #     name: poe
     #     securityContext:
     #       privileged: false
     #     stdin: false
     #     tty: false
-    #     volumeMounts: []
+    #     volumeMounts:
+    #       - name: ssl-certs
+    #         mountPath: /cert
+    #         readOnly: true
     #   restartPolicy: Always
-    #   volumes: []
+    #   volumes:
+    #     - name: ssl-certs
+    #       hostPath:
+    #         path: /var/cert
     gce-container-declaration = <<EOF
 spec:
   containers:
     - name: poe
       image: 'thekevjames/poe:latest'
+      volumeMounts:
+        - name: ssl-certs
+          mountPath: /cert
+          readOnly: true
       env:
         - name: PORT
           value: '80'
         - name: SECRET_KEY_BASE
           value: ${var.poe_secret_key}
+        - name: SSL_CERT
+          value: /cert/cert.pem
+        - name: SSL_KEY
+          value: /cert/key.pem
       stdin: false
       tty: false
   restartPolicy: Always
+  volumes:
+    - name: ssl-certs
+      hostPath:
+        path: /var/cert
 
 # This container declaration format is not public API and may change without notice. Please
 # use gcloud command-line tool or Google Cloud Console to run Containers on Google Compute Engine.
 EOF
     google-logging-enabled    = "true"
+    user-data                 = <<EOF
+#cloud-config
+
+write-files:
+- path: /var/cert/cert.pem
+  permissions: 0644
+  owner: root
+  content: ${base64decode(var.poe_ssl_cert)}
+- path: /var/cert/key.pem
+  permissions: 0644
+  owner: root
+  content: ${base64decode(var.poe_ssl_key)}
+EOF
   }
 
   network_interface {
