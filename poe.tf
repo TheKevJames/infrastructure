@@ -5,6 +5,7 @@ resource "google_compute_address" "poe" {
   region = "us-west1"
 }
 
+# Note, the below is out of data, but could be a useful starting point
 # gcloud compute instances create-with-container poe \
 #   --container-image thekevjames/poe:root \
 #   --tags http-server \
@@ -19,7 +20,7 @@ resource "google_compute_instance" "poe" {
   machine_type = "f1-micro"
   zone         = "us-west1-a"
 
-  tags = ["http-server"]
+  tags = ["http-server", "https-server"]
 
   boot_disk {
     initialize_params {
@@ -97,7 +98,7 @@ EOF
     user-data                 = <<EOF
 #cloud-config
 
-write-files:
+write_files:
 - path: /var/cert/cert.pem
   permissions: 0644
   owner: root
