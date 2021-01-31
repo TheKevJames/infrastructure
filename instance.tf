@@ -1,6 +1,43 @@
 resource "google_service_account" "app-poe" {
   account_id   = "app-poe"
   display_name = "App (poe)"
+
+  # TODO: write to monitoring
+  # Cloud API access scopes
+  # BigQuery
+  # Disabled
+  # Bigtable Admin
+  # Disabled
+  # Bigtable Data
+  # Disabled
+  # Cloud Datastore
+  # Disabled
+  # Cloud Debugger
+  # Disabled
+  # Cloud Pub/Sub
+  # Enabled
+  # Cloud Source Repositories
+  # Disabled
+  # Cloud SQL
+  # Disabled
+  # Compute Engine
+  # Disabled
+  # Service Control
+  # Enabled
+  # Service Management
+  # Read Only
+  # Stackdriver Logging API
+  # Write Only
+  # Stackdriver Monitoring API
+  # Write Only
+  # Stackdriver Trace
+  # Write Only
+  # Storage
+  # Read Only
+  # Task queue
+  # Disabled
+  # User info
+  # Disabled
 }
 
 resource "google_compute_instance" "poe" {
@@ -24,6 +61,8 @@ spec:
   containers:
     - name: poe
       image: 'thekevjames/poe:latest'
+      securityContext:
+        privileged: true
       env:
         - name: PORT
           value: 80
@@ -76,7 +115,7 @@ resource "cloudflare_record" "poe" {
   name    = "poe"
   type    = "A"
 
-  proxied = true
+  proxied = false # TODO: fixup ssl
 
   value = google_compute_instance.poe.network_interface.0.access_config.0.nat_ip
 }
