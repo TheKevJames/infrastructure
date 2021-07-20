@@ -11,13 +11,13 @@ resource "google_compute_address" "poe" {
 #   --tags http-server \
 #   --container-env=PORT=80 \
 #   --container-env=SECRET_KEY_BASE=${SECRET_KEY_BASE} \
-#   --machine-type=f1-micro \
+#   --machine-type=e2-micro \
 #   --zone=us-west1-a \
 #   --scopes=logging-write,monitoring-write,service-management,service-control,trace \
 #   --address=1.2.3.4
 resource "google_compute_instance" "poe" {
   name         = "poe"
-  machine_type = "f1-micro"
+  machine_type = "e2-micro"
   zone         = "us-west1-a"
 
   tags = ["http-server", "https-server"]
