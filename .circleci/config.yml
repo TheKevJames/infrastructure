@@ -7,25 +7,35 @@ jobs:
   lint:
     docker:
       - image: hashicorp/terraform:1.0.7
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
-      - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - run:
           name: install python
           command: |
             apk add -U bash python3
             python3 -m ensurepip
             ln -s /usr/bin/python3 /usr/bin/python
+      # alpine has a pre-compiled version of PyYAML, which will trim a bunch of
+      # time off our builds and prevent us from needing all the build deps
+      - run: apk add -U py3-yaml
       - checkout
-      - run: terraform init
       - linter/pre-commit
 
-  terraform:
+  terraform-plan:
     docker:
       - image: hashicorp/terraform:1.0.7
     environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /gcloud-service-key.json
+      GOOGLE_APPLICATION_CREDENTIALS: /key.json
+    steps:
+      - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
+      - checkout
+      - run: terraform init
+      - run: terraform plan -lock=false
+
+  terraform-apply:
+    docker:
+      - image: hashicorp/terraform:1.0.7
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
       - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - checkout
@@ -36,7 +46,13 @@ workflows:
   run-jobs:
     jobs:
       - lint
-      - terraform:
+      - terraform-plan:
+          filters:
+            branches:
+              ignore: master
+          requires:
+            - lint
+      - terraform-apply:
           filters:
             branches:
               only: master
