@@ -6,7 +6,7 @@ orbs:
 jobs:
   lint:
     docker:
-      - image: hashicorp/terraform:1.0.9
+      - image: hashicorp/terraform:1.0.10
     steps:
       - run:
           name: install python
@@ -22,7 +22,7 @@ jobs:
 
   terraform-plan:
     docker:
-      - image: hashicorp/terraform:1.0.9
+      - image: hashicorp/terraform:1.0.10
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   terraform-apply:
     docker:
-      - image: hashicorp/terraform:1.0.9
+      - image: hashicorp/terraform:1.0.10
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
