@@ -8,15 +8,9 @@ jobs:
     docker:
       - image: hashicorp/terraform:1.1.4
     steps:
-      - run:
-          name: install python
-          command: |
-            apk add -U bash python3
-            python3 -m ensurepip
-            ln -s /usr/bin/python3 /usr/bin/python
-      # alpine has a pre-compiled version of PyYAML, which will trim a bunch of
-      # time off our builds and prevent us from needing all the build deps
-      - run: apk add -U py3-yaml
+      - run: apk add -U bash gcc musl-dev python3 python3-dev py3-yaml
+      - run: python3 -m ensurepip
+      - run: ln -s /usr/bin/python3 /usr/bin/python
       - checkout
       - linter/pre-commit
 
