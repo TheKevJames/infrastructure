@@ -1,6 +1,6 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
     -   id: check-case-conflict
     -   id: check-executables-have-shebangs
@@ -29,7 +29,7 @@ repos:
 
 # terraform
 -   repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.64.0
+    rev: v1.72.1
     hooks:
     -   id: terraform_fmt
     -   id: terraform_validate
