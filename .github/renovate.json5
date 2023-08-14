@@ -1,0 +1,10 @@
+{
+  "extends": ["github>thekevjames/tools:personal"],
+  "packageRules": [
+    {
+      "matchManagers": ["terraform"],
+      "matchPackageNames": ["hashicorp/terraform"],
+      "rangeStrategy": "widen",
+    },
+  ],
+}
