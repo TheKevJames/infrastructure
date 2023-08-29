@@ -37,7 +37,7 @@ repos:
 
 # json
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.24.1
+  rev: 0.26.3
   hooks:
     - id: check-github-workflows
     - id: check-renovate
@@ -46,7 +46,7 @@ repos:
 
 # terraform
 -   repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.82.0
+    rev: v1.83.0
     hooks:
     -   id: terraform_fmt
     -   id: terraform_validate
