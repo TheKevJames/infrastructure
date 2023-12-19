@@ -1,21 +1,20 @@
 version: 2.1
 
 orbs:
-  linter: talkiq/linter@3
+  linter: talkiq/linter@dev:7bb6c1a
+
+executors:
+  terraform:
+    docker:
+      - image: hashicorp/terraform:1.6.5
+    # https://circleci.com/docs/env-vars#alpine-linux
+    shell: /bin/sh -leo pipefail
+    environment:
+      BASH_ENV: /etc/profile
 
 jobs:
-  lint:
-    docker:
-      - image: hashicorp/terraform:1.6.5
-    steps:
-      - run: apk add -U bash gcc musl-dev python3 python3-dev py3-yaml
-      - run: python3 -m ensurepip
-      - checkout
-      - linter/pre-commit
-
   terraform-plan:
-    docker:
-      - image: hashicorp/terraform:1.6.5
+    executor: terraform
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
@@ -25,8 +24,7 @@ jobs:
       - run: terraform plan -lock=false
 
   terraform-apply:
-    docker:
-      - image: hashicorp/terraform:1.6.5
+    executor: terraform
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /key.json
     steps:
@@ -38,16 +36,19 @@ jobs:
 workflows:
   run-jobs:
     jobs:
-      - lint
+      - linter/pre-commit:
+          executor: terraform
+          pre-steps:
+            - run: apk add -U bash python3
       - terraform-plan:
           filters:
             branches:
               ignore: master
           requires:
-            - lint
+            - linter/pre-commit
       - terraform-apply:
           filters:
             branches:
               only: master
           requires:
-            - lint
+            - linter/pre-commit
