@@ -45,10 +45,10 @@ workflows:
             branches:
               ignore: master
           requires:
-            - lint
+            - linter/pre-commit
       - terraform-apply:
           filters:
             branches:
               only: master
           requires:
-            - lint
+            - linter/pre-commit
