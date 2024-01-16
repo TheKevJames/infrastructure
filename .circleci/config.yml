@@ -1,23 +1,21 @@
 version: 2.1
 
 orbs:
-  linter: talkiq/linter@3
+  linter: talkiq/linter@4
+
+executor:
+  terraform:
+    docker:
+      - image: hashicorp/terraform:1.6.6
+    # https://circleci.com/docs/env-vars#alpine-linux
+    shell: /bin/sh -leo pipefail
+    environment:
+      BASH_ENV: /etc/profile
+      GOOGLE_APPLICATION_CREDENTIALS: /key.json
 
 jobs:
-  lint:
-    docker:
-      - image: hashicorp/terraform:1.6.5
-    steps:
-      - run: apk add -U bash gcc musl-dev python3 python3-dev py3-yaml
-      - run: python3 -m ensurepip
-      - checkout
-      - linter/pre-commit
-
   terraform-plan:
-    docker:
-      - image: hashicorp/terraform:1.6.5
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /key.json
+    executor: terraform
     steps:
       - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - checkout
@@ -25,20 +23,23 @@ jobs:
       - run: terraform plan -lock=false
 
   terraform-apply:
-    docker:
-      - image: hashicorp/terraform:1.6.5
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /key.json
+    executor: terraform
     steps:
       - run: echo "${GCLOUD_SERVICE_KEY}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
       - checkout
       - run: terraform init
-      - run: terraform apply -auto-approve
+      - run: terraform plan -out=/tmp/plan.out
+      - run: terraform apply -auto-approve /tmp/plan.out
+      - store_artifacts:
+          path: /tmp/plan.out
 
 workflows:
   run-jobs:
     jobs:
-      - lint
+      - linter/pre-commit:
+          executor: terraform
+          pre-steps:
+            - run: apk add -U bash python3
       - terraform-plan:
           filters:
             branches:
