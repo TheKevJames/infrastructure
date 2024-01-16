@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   linter: talkiq/linter@4
 
-executor:
+executors:
   terraform:
     docker:
       - image: hashicorp/terraform:1.6.6
