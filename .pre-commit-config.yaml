@@ -193,12 +193,13 @@ repos:
         - pyjson5
 
 # docker
-  - repo: https://github.com/AleksaC/hadolint-py
-    rev: v2.12.0.3
-    hooks:
-      - id: hadolint
-        args:
-          - --ignore=DL3025
+# TODO: fixme (build issues)
+#   - repo: https://github.com/AleksaC/hadolint-py
+#     rev: v2.12.0.3
+#     hooks:
+#       - id: hadolint
+#         args:
+#           - --ignore=DL3025
 
 # java
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
