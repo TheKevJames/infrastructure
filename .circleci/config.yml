@@ -40,6 +40,8 @@ workflows:
           executor: terraform
           pre-steps:
             - run: apk add -U bash python3
+            # When this fails, see .github/renovate.json5
+            - run: python3 --version | grep 3.11
       - terraform-plan:
           filters:
             branches:
