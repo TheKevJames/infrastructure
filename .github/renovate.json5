@@ -9,7 +9,7 @@
     {
       // See .circleci/config.yml:linter/pre-commit
       "matchDepPatterns": ["^python$", "^python/cpython$"],
-      "allowedVersions": ">=3.11,<3.12",
+      "allowedVersions": ">=3.12,<3.13",
     },
   ],
 }
