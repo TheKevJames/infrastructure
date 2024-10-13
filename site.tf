@@ -25,7 +25,7 @@ resource "cloudflare_page_rule" "redirect-cv" {
 
   actions {
     forwarding_url {
-      url         = "${var.artifacts_url}/cv.pdf"
+      url         = "${var.artifacts_url}/cv.html"
       status_code = 301
     }
   }
