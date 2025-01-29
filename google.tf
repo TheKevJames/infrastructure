@@ -1,7 +1,8 @@
-resource "cloudflare_record" "verify" {
+resource "cloudflare_dns_record" "verify" {
   zone_id = var.zone
   name    = "@"
   type    = "TXT"
+  ttl     = 1
 
-  value = "google-site-verification=PPSJKE8kBVcIcPxcZ-zab7cAdNHJBp59vrkNgzMWpvs"
+  content = "google-site-verification=PPSJKE8kBVcIcPxcZ-zab7cAdNHJBp59vrkNgzMWpvs"
 }

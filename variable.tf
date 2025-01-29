@@ -1,5 +1,7 @@
 variable "cloudflare_email" {}
-variable "cloudflare_token" {}
+variable "cloudflare_token" {
+  sensitive = true
+}
 
 variable "artifacts_url" {
   default = "https://storage.googleapis.com/thekevjames-artifacts"
