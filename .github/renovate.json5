@@ -6,19 +6,19 @@
     "packageRules": [
         {
             "matchManagers": ["terraform"],
-            "matchDepPatterns": [
-                "^hashicorp/terraform$",
-                "^terraform$",
+            "matchDepNames": [
+                "/^hashicorp/terraform$/",
+                "/^terraform$/",
             ],
             "rangeStrategy": "widen",
         },
         {
             // See .circleci/config.yml:linter/pre-commit
             "groupName": "python",
-            "matchDepPatterns": [
-                "^cimg/python$",
-                "^python$",
-                "^python/cpython$",
+            "matchDepNames": [
+                "/^cimg/python$/",
+                "/^python$/",
+                "/^python/cpython$/",
             ],
             "allowedVersions": ">=3.12,<3.13",
         },
