@@ -1,15 +1,26 @@
 {
-  "extends": ["github>thekevjames/tools:personal"],
-  "packageRules": [
-    {
-      "matchManagers": ["terraform"],
-      "matchPackageNames": ["hashicorp/terraform"],
-      "rangeStrategy": "widen",
-    },
-    {
-      // See .circleci/config.yml:linter/pre-commit
-      "matchDepPatterns": ["^python$", "^python/cpython$"],
-      "allowedVersions": ">=3.12,<3.13",
-    },
+    "extends": [
+        "github>thekevjames/tools:personal",
+        "github>thekevjames/tools//renovate/version-as-app.json5",
+    ],
+    "packageRules": [
+        {
+            "matchManagers": ["terraform"],
+            "matchDepPatterns": [
+                "^hashicorp/terraform$",
+                "^terraform$",
+            ],
+            "rangeStrategy": "widen",
+        },
+        {
+            // See .circleci/config.yml:linter/pre-commit
+            "groupName": "python",
+            "matchDepPatterns": [
+                "^cimg/python$",
+                "^python$",
+                "^python/cpython$",
+            ],
+            "allowedVersions": ">=3.12,<3.13",
+        },
   ],
 }
