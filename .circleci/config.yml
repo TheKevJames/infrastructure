@@ -6,7 +6,7 @@ orbs:
 executors:
   terraform:
     docker:
-      - image: hashicorp/terraform:1.13.0
+      - image: hashicorp/terraform:1.13.1
     # https://circleci.com/docs/env-vars#alpine-linux
     shell: /bin/sh -leo pipefail
     environment:
