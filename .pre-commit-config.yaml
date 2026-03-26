@@ -241,6 +241,10 @@ repos:
     rev: v0.1.1
     hooks:
       - id: tffumpt
+  - repo: https://github.com/AleksaC/tflint-py
+    rev: v0.61.0
+    hooks:
+      - id: tflint
 
 # shell
   - repo: https://github.com/openstack/bashate
