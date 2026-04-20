@@ -242,7 +242,7 @@ repos:
     hooks:
       - id: tffumpt
   - repo: https://github.com/AleksaC/tflint-py
-    rev: v0.61.0
+    rev: v0.62.0
     hooks:
       - id: tflint
 
