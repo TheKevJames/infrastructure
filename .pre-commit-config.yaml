@@ -234,7 +234,7 @@ repos:
 
 # terraform
   - repo: https://github.com/AleksaC/terraform-py
-    rev: v1.14.8
+    rev: v1.14.9
     hooks:
       - id: tf-validate
   - repo: https://github.com/AleksaC/tffumpt
