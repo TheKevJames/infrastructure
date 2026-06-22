@@ -6,7 +6,7 @@ orbs:
 executors:
   terraform:
     docker:
-      - image: hashicorp/terraform:1.15.5
+      - image: hashicorp/terraform:1.15.6
     # https://circleci.com/docs/env-vars#alpine-linux
     shell: /bin/sh -leo pipefail
     environment:
@@ -41,7 +41,7 @@ workflows:
           pre-steps:
             - run: apk add -U bash python3
             # When this fails, see .github/renovate.json5
-            - run: python3 --version | grep 3.12
+            - run: python3 --version | grep 3.14
       - terraform-plan:
           filters:
             branches:
