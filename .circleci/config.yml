@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  linter: talkiq/linter@4.0.1
+  pre-commit: https://raw.githubusercontent.com/TheKevJames/tools/refs/heads/master/circleci-orbs/pre-commit.yml
 
 executors:
   terraform:
@@ -36,7 +36,7 @@ jobs:
 workflows:
   run-jobs:
     jobs:
-      - linter/pre-commit:
+      - pre-commit/pre-commit:
           executor: terraform
           pre-steps:
             - run: apk add -U bash python3
@@ -47,10 +47,10 @@ workflows:
             branches:
               ignore: master
           requires:
-            - linter/pre-commit
+            - pre-commit/pre-commit
       - terraform-apply:
           filters:
             branches:
               only: master
           requires:
-            - linter/pre-commit
+            - pre-commit/pre-commit
