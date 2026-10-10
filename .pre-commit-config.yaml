@@ -47,7 +47,7 @@ repos:
       - id: check-docstring-first
       - id: name-tests-test
   - repo: https://github.com/PyCQA/pylint
-    rev: v4.1.1
+    rev: v4.1.2
     hooks:
       - id: pylint
         args:
@@ -138,7 +138,7 @@ repos:
           - --config
           - lint.isort.split-on-trailing-comma = false
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.09.30
+    rev: 2026.10.06
     hooks:
       - id: validate-pyproject
   - repo: local
