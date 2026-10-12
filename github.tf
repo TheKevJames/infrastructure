@@ -1,5 +1,6 @@
 locals {
-  # GitHub OIDC subject for pushes to the default branch of TheKevJames/web.
+  # GitHub OIDC subjects for pushes to the default branch of each repo.
+  cv_deployer  = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repo_ref/TheKevJames/cv@refs/heads/master"
   web_deployer = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repo_ref/TheKevJames/web@refs/heads/master"
   web_buckets  = toset(["thekev.in", "thekevjames-artifacts", "www.thekev.in"])
 }
@@ -42,6 +43,12 @@ resource "google_storage_bucket_iam_member" "web_deployer" {
   bucket = each.key
   role   = "roles/storage.objectUser"
   member = local.web_deployer
+}
+
+resource "google_storage_bucket_iam_member" "cv_deployer" {
+  bucket = "thekevjames-artifacts"
+  role   = "roles/storage.objectUser"
+  member = local.cv_deployer
 }
 
 # `gcloud storage rsync` to a bucket root needs storage.buckets.get.
