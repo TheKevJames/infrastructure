@@ -13,10 +13,9 @@
             "rangeStrategy": "widen",
         },
         {
-            // See .circleci/config.yml:linter/pre-commit
+            // See .pre-commit-config.yaml:default_language_version
             "groupName": "python",
             "matchDepNames": [
-                "/^cimg/python$/",
                 "/^python$/",
                 "/^python/cpython$/",
             ],

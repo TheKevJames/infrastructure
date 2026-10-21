@@ -3,13 +3,10 @@ variable "artifacts_url" {
   type    = string
 }
 
-variable "cloudflare_email" {
-  type = string
-}
-
-variable "cloudflare_token" {
-  sensitive = true
-  type      = string
+# Plan's identity can only read cloudflare-read; apply overrides this.
+variable "cloudflare_token_secret" {
+  default = "cloudflare-read"
+  type    = string
 }
 
 variable "domain" {
