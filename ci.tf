@@ -67,8 +67,9 @@ resource "google_project_iam_member" "terraform_apply" {
   member  = google_service_account.terraform_apply.member
 }
 
-# Versions are added by hand and read through ephemeral resources,
-# so token values never reach state, which the plan identity can read.
+# Versions are added by hand (see README) and read through ephemeral
+# resources, so token values never reach state, which the plan identity can
+# read.
 resource "google_secret_manager_secret" "cloudflare" {
   for_each = toset(["cloudflare-edit", "cloudflare-read"])
 

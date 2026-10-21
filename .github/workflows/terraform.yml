@@ -1,0 +1,60 @@
+name: terraform
+
+# Credentials come from ci.tf via workload identity federation; see README.rst.
+# GCP, not this file, decides which identity a run may use, so editing this
+# workflow on a branch can't escalate past terraform-plan.
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions: {}
+
+env:
+  TF_IN_AUTOMATION: 'true'
+  TF_INPUT: 'false'
+  WORKLOAD_IDENTITY_PROVIDER: projects/523035435583/locations/global/workloadIdentityPools/github/providers/github
+
+jobs:
+  terraform-plan:
+    if: github.event_name == 'pull_request'
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-26.04
+    container: hashicorp/terraform:1.16.6@sha256:bfffc1ded5fbf0a17beaaf22eb4793980abdb19d0761ff6a3a0efb2ab4d9b316
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093  # v3.0.0
+        with:
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: terraform-plan@thekevjames-175823.iam.gserviceaccount.com
+      - run: terraform init
+      # terraform-plan can't write the state lock.
+      - run: terraform plan -lock=false
+
+  terraform-apply:
+    if: github.event_name == 'push'
+    concurrency:
+      group: ${{ github.workflow }}-apply
+      cancel-in-progress: false
+    runs-on: ubuntu-26.04
+    container: hashicorp/terraform:1.16.6@sha256:bfffc1ded5fbf0a17beaaf22eb4793980abdb19d0761ff6a3a0efb2ab4d9b316
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TF_VAR_cloudflare_token_secret: cloudflare-edit
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093  # v3.0.0
+        with:
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: terraform-apply@thekevjames-175823.iam.gserviceaccount.com
+      - run: terraform init
+      - run: terraform plan -out=/tmp/plan.out
+      - run: terraform apply /tmp/plan.out

@@ -1,6 +1,10 @@
+# Ephemeral, so the token never reaches state, which the plan identity can read.
+ephemeral "google_secret_manager_secret_version" "cloudflare" {
+  secret = var.cloudflare_token_secret
+}
+
 provider "cloudflare" {
-  email   = var.cloudflare_email
-  api_key = var.cloudflare_token
+  api_token = ephemeral.google_secret_manager_secret_version.cloudflare.secret_data
 }
 
 provider "google" {
