@@ -14,7 +14,7 @@ jobs:
           # renovate: datasource=github-releases depName=astral-sh/uv
           version: 0.13.4
           # renovate: datasource=docker depName=python
-          python-version: 3.14.8
+          python-version: 3.14.9
       - uses: j178/prek-action@44924fe9ef4a6f88253c4b6b1bf11c689d3ce53d  # v3.1.0
         with:
           # renovate: datasource=pypi depName=prek
