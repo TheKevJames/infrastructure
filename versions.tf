@@ -6,7 +6,7 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "8.9.0"
+      version = "8.10.0"
     }
   }
   required_version = ">= 0.14"
