@@ -18,5 +18,5 @@ jobs:
       - uses: j178/prek-action@7b101f8338a08d2bd6fdb3625e4e7692428763a3  # v3.1.1
         with:
           # renovate: datasource=pypi depName=prek
-          prek-version: v0.5.10
+          prek-version: v0.5.11
           extra-args: --all-files
